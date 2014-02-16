@@ -1,0 +1,6 @@
+#!/bin/bash
+
+. hooks/docker-helpers
+
+HOST=`unit-get private-address`
+relation-set hostname=$HOST port=80

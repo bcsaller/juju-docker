@@ -1,0 +1,7 @@
+#!/bin/bash
+
+. hooks/docker-helpers
+
+
+docker-start
+

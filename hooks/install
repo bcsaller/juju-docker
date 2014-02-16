@@ -1,0 +1,37 @@
+#!/bin/bash
+
+
+# Install Docker from PPA
+if ! dpkg -s lxc-docker; then 
+    sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 36A1D7869245C8950F966E92D8576A8BA88D21E9
+    sudo sh -c "echo deb http://get.docker.io/ubuntu docker main > /etc/apt/sources.list.d/docker.list"
+    sudo apt-get update
+    sudo apt-get install -y -qq lxc-docker
+fi
+
+# Create naive data dir (move to config-changed)
+if [ ! -d `pwd`/data ]; then
+    mkdir `pwd`/data
+fi
+
+# Trusty deprecates lxc-kill, install a wrapper
+# till the docker ppa catches up (patch already
+# in trunk)
+if [ ! -e /usr/bin/lxc-kill ]; then
+    sudo cp lxc-kill /usr/bin/lxc-kill
+fi
+
+# There is a delay before the docket socket is available
+# This might be related to docker PR #4168
+# and should be removed shortly
+start docker
+sleep 20
+# Explicitly pull image 
+for i in {1..3}; do 
+  if sudo docker pull  dockerfile/rethinkdb; then
+    break
+  fi
+done
+
+
+

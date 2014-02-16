@@ -1,0 +1,5 @@
+#!/bin/bash
+
+. hooks/docker-helpers
+
+docker-restart

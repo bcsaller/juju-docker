@@ -1,0 +1,24 @@
+function docker-restart() {
+    if [ -e CONTAINER_ID ]; then
+        sudo docker restart `cat CONTAINER_ID`
+    fi
+}
+
+function docker-run() {
+    peers=$1
+    docker-stop
+    # XXX: no using storage config settings
+    sudo docker run -d -cidfile CONTAINER_ID -p 80:8080 -p 28015:28015 -p 29015:29015 -v `pwd`/data:/rethinkdb dockerfile/rethinkdb --bind all --canonical-address `unit-get public-address` --machine-name `hostname | sed 's/-/_/g'` $peers
+}
+
+function docker-start() {
+    peers=`hooks/peers.py`
+    docker-run $peers
+}
+
+function docker-stop() {
+    if [ -e CONTAINER_ID ]; then
+        sudo docker stop `cat CONTAINER_ID`
+        rm CONTAINER_ID
+    fi
+}

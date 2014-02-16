@@ -1,0 +1,17 @@
+name: rethinkdb-docker
+summary: An open-source distributed database built with love.
+maintainer: Benjamin Saller <benjamin.saller@canonical.com>
+description: |
+  This shows using a docker container and some helpers to sketch how orchestration of
+  docker containers can work with Juju.
+categories:
+  - database
+subordinate: false
+provides:
+  website:
+    interface: http
+  rethinkdb:
+    interface: rethinkdb
+peers:
+  intracluster:
+      interface: rethinkdb-cluster

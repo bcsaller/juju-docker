@@ -1,0 +1,12 @@
+RethinkDB running from docker
+
+This is currently at the proof of concept level and should not 
+be considered anything other than a toy.
+
+This shows how to restart a docker container on its hook invocations
+with new cli/env settings.
+
+I'm still seeing intermittent hook failures which are usually 
+resolved with juju resovled -r <unitname>
+
+Little time has been spent trying to make this more robust.
