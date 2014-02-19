@@ -81,14 +81,15 @@ def cli_peers(peers=None, port=29015):
 
 
 def relation_get(key="-", unit=None):
-    args = ['relation-get', key]
+    args = ['relation-get', '--format', 'json', key]
     if unit:
         args.append(unit)
     return run(args)
 
 
 def relation_ip(unit):
-    return relation_get('private-address', unit).stdout
+    return json.loads(
+        relation_get('private-address', unit).stdout)
 
 
 def main():
