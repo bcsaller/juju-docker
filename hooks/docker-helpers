@@ -7,7 +7,7 @@ function docker-restart() {
 function docker-run() {
     docker-stop
     # XXX: no using storage config settings
-    sudo docker run -d -cidfile CONTAINER_ID -p 80:8080 -p 28015:28015 -p 29015:29015 -v `pwd`/data:/rethinkdb dockerfile/rethinkdb --bind all --canonical-address `unit-get public-address` --machine-name `hostname | sed 's/-/_/g'` $*
+    sudo docker run -d -cidfile CONTAINER_ID -p 80:8080 -p 28015:28015 -p 29015:29015 -v `pwd`/data:/rethinkdb dockerfile/rethinkdb --bind all --canonical-address `unit-get public-address` --canonical-address `unit-get private-address` --machine-name `hostname | sed 's/-/_/g'` $*
 }
 
 function docker-start() {
