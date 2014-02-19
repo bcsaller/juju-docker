@@ -60,7 +60,7 @@ def relation_list():
     result = run("relation-list --format json")
     if result.returncode == 0:
         return json.loads(result.stdout)
-    return ''
+    return []
 
 
 def get_peers():
@@ -88,11 +88,7 @@ def relation_get(key="-", unit=None):
 
 
 def relation_ip(unit):
-    return relation_get('private-address', unit)
-
-
-def relation_set(key, value):
-    return run('relation-set {}="{}"'.format(key, value))
+    return relation_get('private-address', unit).stdout
 
 
 def main():
