@@ -6,7 +6,27 @@ be considered anything other than a toy.
 This shows how to restart a docker container on its hook invocations
 with new cli/env settings.
 
-I'm still seeing intermittent hook failures which are usually 
-resolved with juju resovled -r <unitname>
+This version is somewhat improved in terms of robustness beyond the initial 
+release.
 
-Little time has been spent trying to make this more robust.
+Testing
+-------
+
+The following should result in a deployment with the Juju GUI and haproxy. Going to the 
+exposed haproxy port will get you the admin interface to rethinkdb.
+
+juju bootstrap
+juju deploy --repository . local:trusty/rethinkdb-docker rdb
+juju expose rdb
+sleep 60
+echo juju debug-hooks rdb/0
+juju add-unit rdb
+
+juju deploy cs:precise/juju-gui
+juju expose juju-gui
+
+juju deploy cs:precise/haproxy
+juju add-relation haproxy rdb
+juju expose haproxy
+
+
