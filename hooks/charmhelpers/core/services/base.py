@@ -1,5 +1,6 @@
 import os
 import re
+import json
 from collections import Iterable
 
 from charmhelpers.core import host
@@ -103,6 +104,8 @@ class ServiceManager(object):
             ])
             manager.manage()
         """
+        self._ready_file = os.path.join(hookenv.charm_dir(), '.ready')
+        self._ready = None
         self.services = {}
         for service in services or []:
             service_name = service['service']
@@ -197,28 +200,43 @@ class ServiceManager(object):
         reqs = service.get('required_data', [])
         return all(bool(req) for req in reqs)
 
+    def _load_ready_file(self):
+        if self._ready is not None:
+            return
+        if os.path.exists(self._ready_file):
+            with open(self._ready_file) as fp:
+                self._ready = set(json.load(fp))
+        else:
+            self._ready = set()
+
+    def _save_ready_file(self):
+        if self._ready is None:
+            return
+        with open(self._ready_file, 'w') as fp:
+            json.dump(list(self._ready), fp)
+
     def save_ready(self, service_name):
         """
         Save an indicator that the given service is now data_ready.
         """
-        ready_file = '{}/.ready.{}'.format(hookenv.charm_dir(), service_name)
-        with open(ready_file, 'a'):
-            pass
+        self._load_ready_file()
+        self._ready.add(service_name)
+        self._save_ready_file()
 
     def save_lost(self, service_name):
         """
         Save an indicator that the given service is no longer data_ready.
         """
-        ready_file = '{}/.ready.{}'.format(hookenv.charm_dir(), service_name)
-        if os.path.exists(ready_file):
-            os.remove(ready_file)
+        self._load_ready_file()
+        self._ready.discard(service_name)
+        self._save_ready_file()
 
     def was_ready(self, service_name):
         """
         Determine if the given service was previously data_ready.
         """
-        ready_file = '{}/.ready.{}'.format(hookenv.charm_dir(), service_name)
-        return os.path.exists(ready_file)
+        self._load_ready_file()
+        return service_name in self._ready
 
 
 class ManagerCallback(object):
