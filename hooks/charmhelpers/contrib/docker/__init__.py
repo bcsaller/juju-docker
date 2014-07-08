@@ -68,7 +68,7 @@ class DockerCallback(ManagerCallback):
             os.remove(container_id_file)
         if event_name == 'start':
             subprocess.check_call(
-                ['docker', 'run', '-d', '-cidfile', container_id_file] +
+                ['docker', 'run', '-d', '--cidfile', container_id_file] +
                 self.get_volume_args(manager, service_name) +
                 self.get_port_args(manager, service_name) +
                 [service_name] +

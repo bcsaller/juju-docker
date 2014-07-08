@@ -49,6 +49,7 @@ def manage():
                 }),
                 docker.DockerVolumes(mapped_volumes={config['storage-path']: '/rethinkdb'}),
                 docker.DockerContainerArgs(
+                    'rethinkdb',
                     '--bind', 'all',
                     '--canonical-address', hookenv.unit_get('public-address'),
                     '--canonical-address', hookenv.unit_get('private-address'),
