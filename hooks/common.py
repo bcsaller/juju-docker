@@ -9,7 +9,6 @@ from charmhelpers.contrib import docker
 class ClusterPeers(docker.DockerRelation):
     name = 'intracluster'
     interface = 'rethinkdb-cluster'
-    required_keys = ['private-address']
     port = 29015
 
     def map(self, relation_settings):
@@ -19,6 +18,9 @@ class ClusterPeers(docker.DockerRelation):
                 self.port
             )
         ]
+
+    def is_ready(self):
+        return True  # Cluster is optional.
 
 
 class WebsiteRelation(services.helpers.RelationContext):
