@@ -209,4 +209,4 @@ class DockerRelation(RelationContext, DockerContainerArgs):
 
 
 # Convenience aliases for Docker
-docker_start = dockert_stop = DockerCallback()
+docker_start = docker_stop = DockerCallback()
