@@ -1,14 +1,1 @@
-#!/bin/bash
-set -x
-
-. hooks/docker-helpers
-
-open-port 80/tcp
-open-port 28015/tcp
-open-port 29015/tcp
-
-
-# workaround, should happen on peer relation join
-# but the 1st unit doesn't get called until it 
-# has a peer
-docker-start
+common.py

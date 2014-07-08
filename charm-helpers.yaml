@@ -1,0 +1,6 @@
+destination: hooks/charmhelpers
+branch: lp:~johnsca/charm-helpers/services-docker/
+include:
+  - core
+  - fetch
+  - contrib/docker

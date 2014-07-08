@@ -3,4 +3,3 @@ options:
     type: string
     default: "data"
     description: "Local directory to map storage into"
-
