@@ -1,6 +1,1 @@
-#!/bin/bash
-
-. hooks/docker-helpers
-
-docker-stop
-
+common.py
